@@ -44,7 +44,28 @@ const Bridge = (() => {
         onArgs(a);
       });
       post('streamlit:componentReady', { apiVersion: 1 });
-      post('streamlit:setFrameHeight', { height: 820 });
+      
+const updateFrameHeight = () => {
+    const height = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+    );
+
+    post('streamlit:setFrameHeight', { height: height });
+};
+
+requestAnimationFrame(updateFrameHeight);
+
+window.addEventListener('resize', updateFrameHeight);
+
+if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(() => {
+        requestAnimationFrame(updateFrameHeight);
+    });
+
+    observer.observe(document.body);
+}
+
     },
     send(action, payload = {}) { setValue(action, payload); },
     call(action, payload = {}) {

@@ -20,11 +20,43 @@ ss = st.session_state
 _component = components.declare_component("edubridge_auth", path=str(Path(__file__).with_name("auth_component")))
 
 # The component iframe is stretched over the whole page so the original full-screen design is preserved.
-_CSS = """<style>
-iframe[title$="edubridge_auth"]{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;border:0;z-index:999990;background:#04050d;color-scheme:dark}
-[data-testid="stHeader"],[data-testid="stToolbar"],[data-testid="stSidebar"],[data-testid="collapsedControl"],footer{display:none!important}
-.stApp{overflow:hidden}
-</style>"""
+
+_CSS = """
+<style>
+iframe[title$="edubridge_auth"] {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    border: 0;
+    z-index: 999990;
+    background: #04050d;
+    color-scheme: dark;
+    touch-action: pan-y;
+}
+
+[data-testid="stHeader"],
+[data-testid="stToolbar"],
+[data-testid="stSidebar"],
+[data-testid="collapsedControl"],
+footer {
+    display: none !important;
+}
+
+.stApp {
+    overflow: visible !important;
+}
+
+@media (max-width: 600px) {
+    iframe[title$="edubridge_auth"] {
+        width: 100%;
+        height: 100dvh;
+    }
+}
+</style>
+"""
+
 
 
 def _secret(key):
